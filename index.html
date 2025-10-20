@@ -5,18 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>ICL SAFE • AI</title>
 
-  <!-- PWA hooks (כבר יש לך את הקבצים האלו בריפו) -->
+  <!-- PWA hooks -->
   <link rel="manifest" href="manifest.webmanifest" />
   <meta name="theme-color" content="#0b1220" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <link rel="icon" type="image/png" href="favicon.png" />
   <script>
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+      addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{}));
     }
   </script>
 
-  <!-- Theme -->
+  <!-- THEME: dark like the logo -->
   <style>
     :root{
       --bg:#0b1220; --panel:#0f182b; --panel2:#111a2b; --muted:#a8b3c7; --text:#e6f2ff;
@@ -26,20 +26,19 @@
     *{box-sizing:border-box}
     html,body{height:100%}
     body{margin:0; background:var(--bg); color:var(--text); font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
-    a{color:var(--primary)}
-    .muted{color:var(--muted)}
+    a{color:var(--primary)} .muted{color:var(--muted)}
+
+    header{position:sticky; top:0; z-index:50;
+      background:linear-gradient(180deg, rgba(9,17,31,.92), rgba(9,17,31,.75));
+      border-bottom:1px solid var(--border); backdrop-filter:saturate(180%) blur(8px)}
+    header .inner{display:flex; align-items:center; gap:10px; padding:10px 14px; max-width:1100px; margin:0 auto}
+    header img{border-radius:8px} header .title{font-weight:800; letter-spacing:.3px}
+
     .container{max-width:1100px; margin:0 auto; padding:14px}
-    header{position:sticky; top:0; z-index:50; background:linear-gradient(180deg, rgba(9,17,31,.92), rgba(9,17,31,.75)); border-bottom:1px solid var(--border); backdrop-filter:saturate(180%) blur(8px)}
-    header .inner{display:flex; align-items:center; gap:10px; padding:10px 14px}
-    header img{border-radius:8px}
-    header .title{font-weight:800; letter-spacing:.3px}
     .card{background:var(--panel); border:1px solid var(--border); border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,.25)}
     .panel{background:var(--panel2); border:1px solid var(--border); border-radius:16px}
-    .row{display:flex; gap:12px; align-items:center}
-    .col{display:flex; flex-direction:column; gap:10px}
-    .grid{display:grid; gap:12px}
-    .grid-2{grid-template-columns:1fr 1fr}
-    .grid-3{grid-template-columns:repeat(3,1fr)}
+    .row{display:flex; gap:12px; align-items:center} .col{display:flex; flex-direction:column; gap:10px}
+    .grid{display:grid; gap:12px} .grid-2{grid-template-columns:1fr 1fr} .grid-3{grid-template-columns:repeat(3,1fr)}
     @media (max-width:760px){ .grid-2,.grid-3{grid-template-columns:1fr} }
 
     .input, select.input, textarea.input{
@@ -67,27 +66,45 @@
     .tab{padding:10px 12px; border-radius:10px; cursor:pointer; user-select:none; border:1px solid var(--border); color:var(--muted)}
     .tab.active{background:linear-gradient(180deg, rgba(50,213,242,.15), rgba(17,179,217,.05)); color:var(--text); border-color:rgba(255,255,255,.18)}
 
-    /* Login */
+    /* Login/Registration */
     #authView .box{max-width:420px; margin:8vh auto; padding:18px}
-
-    /* Registration */
     #regView .box{max-width:820px; margin:18px auto; padding:18px}
 
     /* SOS round buttons */
     .sos-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; padding:14px}
     .sos-btn{
       position:relative; aspect-ratio:1/1; border-radius:999px; border:none; cursor:pointer;
-      background:radial-gradient(60% 60% at 50% 35%, rgba(255,255,255,.18), rgba(255,255,255,.02)),
-                 conic-gradient(from 220deg, var(--primary), var(--primary-2));
       color:#03171d; font-weight:900; font-size:34px; display:flex; align-items:center; justify-content:center;
       box-shadow:0 12px 30px rgba(0,0,0,.35), inset 0 0 40px rgba(255,255,255,.08);
       outline:1px solid rgba(255,255,255,.08);
-      transition:transform .08s ease, box-shadow .12s ease;
+      transition:transform .08s ease, box-shadow .12s ease; user-select:none;
     }
     .sos-btn:active{transform:scale(.98)}
-    .sos-label{position:absolute; bottom:-8px; left:0; right:0; text-align:center; font-size:12px; color:var(--muted)}
+    .sos-label{position:absolute; bottom:10px; left:0; right:0; text-align:center; font-size:12px; font-weight:800; letter-spacing:.3px}
 
-    /* Log */
+    /* Per-type colors (as agreed) */
+    .sos-btn[data-type="FIRE"]{
+      background: radial-gradient(60% 60% at 50% 35%, rgba(255,255,255,.18), rgba(255,255,255,.02)),
+                  conic-gradient(from 220deg, #ff784e, #ef4444);
+      color:#200;
+    }
+    .sos-btn[data-type="MED"]{
+      background: radial-gradient(60% 60% at 50% 35%, rgba(255,255,255,.18), rgba(255,255,255,.02)),
+                  conic-gradient(from 220deg, #67e8f9, #11b3d9);
+      color:#03171d;
+    }
+    .sos-btn[data-type="SEC"]{
+      background: radial-gradient(60% 60% at 50% 35%, rgba(255,255,255,.18), rgba(255,255,255,.02)),
+                  conic-gradient(from 220deg, #c4b5fd, #7c3aed);
+      color:#130b2b;
+    }
+    .sos-btn[data-type="ENV"]{
+      background: radial-gradient(60% 60% at 50% 35%, rgba(255,255,255,.18), rgba(255,255,255,.02)),
+                  conic-gradient(from 220deg, #6ee7b7, #10b981);
+      color:#062019;
+    }
+
+    /* Log list */
     #logList{padding:8px 14px}
     .log-row{display:grid; grid-template-columns: 110px 1fr; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border)}
     .tag{font-size:12px; padding:2px 7px; border-radius:999px; display:inline-block}
@@ -96,22 +113,12 @@
     .t-sec{background:#14112b; color:#c7b3ff}
     .t-env{background:#0c2318; color:#b3ffdb}
     .empty{color:#93a3bd; padding:10px}
-
-    /* Floating tools (optional admin) */
-    #peopleBtn{position:fixed; right:16px; bottom:16px; z-index:30; padding:12px 14px; border:none; border-radius:999px;
-      background:linear-gradient(180deg, var(--primary), var(--primary-2)); color:#00131a; font-weight:800; box-shadow:0 10px 24px rgba(0,0,0,.18)}
-    #peopleBtn.hidden{display:none}
-
-    /* Modal */
-    .modal{display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:40; align-items:center; justify-content:center}
-    .modal.show{display:flex}
-    .modal .content{background:var(--panel2); border:1px solid var(--border); border-radius:16px; width:min(1100px,92vw); max-height:88vh; overflow:auto}
   </style>
 </head>
 <body>
 
 <header>
-  <div class="inner container">
+  <div class="inner">
     <img src="icons/icon-192.png" alt="ICL" width="28" height="28">
     <div class="title">ICL SAFE • AI</div>
     <div style="margin-inline-start:auto; opacity:.8; font-size:12px">PWA • Offline</div>
@@ -120,7 +127,7 @@
 
 <main class="container">
 
-  <!-- AUTH VIEW -->
+  <!-- AUTH VIEW (login) -->
   <section id="authView">
     <div class="card box">
       <h2 style="margin:0 0 10px">כניסה למערכת</h2>
@@ -141,38 +148,14 @@
     <div class="card box">
       <h2 style="margin:0 0 10px">Registration — יצירת משתמש</h2>
       <div class="grid grid-2">
-        <div class="col">
-          <label>מספר אישי (UserName) *</label>
-          <input id="r_user" class="input" inputmode="numeric" placeholder="מספר אישי"/>
-        </div>
-        <div class="col">
-          <label>סיסמה *</label>
-          <input id="r_pass" class="input" type="password" placeholder="בחר סיסמה"/>
-        </div>
-        <div class="col">
-          <label>שם מלא *</label>
-          <input id="r_name" class="input" placeholder="שם מלא"/>
-        </div>
-        <div class="col">
-          <label>נייד</label>
-          <input id="r_phone" class="input" inputmode="tel" placeholder="05X-XXXXXXX"/>
-        </div>
-        <div class="col">
-          <label>תפקיד</label>
-          <input id="r_role" class="input" placeholder="תפקיד"/>
-        </div>
-        <div class="col">
-          <label>אזור / מפעל</label>
-          <input id="r_area" class="input" placeholder="אזור"/>
-        </div>
-        <div class="col">
-          <label>תחנה / עמדת עבודה</label>
-          <input id="r_station" class="input" placeholder="תחנה"/>
-        </div>
-        <div class="col">
-          <label>אימייל</label>
-          <input id="r_email" class="input" inputmode="email" placeholder="name@example.com"/>
-        </div>
+        <div class="col"><label>מספר אישי (UserName) *</label><input id="r_user" class="input" inputmode="numeric" placeholder="מספר אישי"/></div>
+        <div class="col"><label>סיסמה *</label><input id="r_pass" class="input" type="password" placeholder="בחר סיסמה"/></div>
+        <div class="col"><label>שם מלא *</label><input id="r_name" class="input" placeholder="שם מלא"/></div>
+        <div class="col"><label>נייד</label><input id="r_phone" class="input" inputmode="tel" placeholder="05X-XXXXXXX"/></div>
+        <div class="col"><label>תפקיד</label><input id="r_role" class="input" placeholder="תפקיד"/></div>
+        <div class="col"><label>אזור / מפעל</label><input id="r_area" class="input" placeholder="אזור"/></div>
+        <div class="col"><label>תחנה / עמדת עבודה</label><input id="r_station" class="input" placeholder="תחנה"/></div>
+        <div class="col"><label>אימייל</label><input id="r_email" class="input" inputmode="email" placeholder="name@example.com"/></div>
       </div>
       <div class="row" style="justify-content:flex-start; margin-top:8px; gap:10px">
         <button id="reg_save" class="btn btn-ok">שמירה וכניסה</button>
@@ -180,7 +163,7 @@
         <div id="reg_msg" class="muted"></div>
       </div>
       <div class="muted" style="margin-top:8px; font-size:12px">
-        הערה: נתונים נשמרים מקומית בדפדפן (לצרכי דמו). לפרודקשן נדרש שרת/אימות ארגוני.
+        נתונים נשמרים מקומית בדפדפן (דמו). לפרודקשן נוסיף שרת/SSO.
       </div>
     </div>
   </section>
@@ -192,6 +175,7 @@
       <div class="tab active" data-tab="sos">SOS</div>
       <div class="tab" data-tab="log">יומן קריאות</div>
       <div class="tab" data-tab="profile">פרופיל</div>
+      <div class="tab" data-tab="people">People</div>
       <div style="margin-inline-start:auto"></div>
       <button id="logoutBtn" class="btn-small">התנתק</button>
     </div>
@@ -199,12 +183,12 @@
     <!-- SOS -->
     <div id="tab_sos" class="panel" style="padding:8px">
       <div class="sos-grid">
-        <button class="sos-btn" data-type="FIRE" aria-label="אש 🔥">🔥<div class="sos-label">אש</div></button>
-        <button class="sos-btn" data-type="MED" aria-label="רפואה 🩺">🩺<div class="sos-label">רפואה</div></button>
-        <button class="sos-btn" data-type="SEC" aria-label="ביטחון 🛡️">🛡️<div class="sos-label">ביטחון</div></button>
-        <button class="sos-btn" data-type="ENV" aria-label="סביבה 🌿">🌿<div class="sos-label">סביבה</div></button>
+        <button class="sos-btn" data-type="FIRE" aria-label="Fire">🔥<div class="sos-label">Fire</div></button>
+        <button class="sos-btn" data-type="MED" aria-label="Medical">🩺<div class="sos-label">Medical</div></button>
+        <button class="sos-btn" data-type="SEC" aria-label="Security">🛡️<div class="sos-label">Security</div></button>
+        <button class="sos-btn" data-type="ENV" aria-label="Environment">🌿<div class="sos-label">Environment</div></button>
       </div>
-      <div class="muted" style="padding:0 14px 10px; font-size:12px">לחיצה תוסיף רשומה ליומן הקריאות עם תאריך ושעת הלחיצה + המשתמש המחובר.</div>
+      <div class="muted" style="padding:0 14px 10px; font-size:12px">לחיצה תוסיף רשומה ליומן עם תאריך/שעה, משתמש מחובר, טלפון ו-GPS (אם מאושר).</div>
     </div>
 
     <!-- LOG -->
@@ -215,34 +199,29 @@
       <div id="logList"></div>
     </div>
 
-    <!-- PROFILE (read-only summary from registration) -->
+    <!-- PROFILE (read-only) -->
     <div id="tab_profile" class="panel" style="padding:14px; display:none">
       <h3 style="margin:4px 0 10px">פרטי משתמש</h3>
       <div id="profileBox" class="grid grid-3"></div>
+    </div>
+
+    <!-- PEOPLE (registered users) -->
+    <div id="tab_people" class="panel" style="padding:8px; display:none">
+      <div id="peopleList" style="padding:8px 4px"></div>
     </div>
   </section>
 
 </main>
 
-<!-- (אופציונלי) כפתור בנק אנשים למנהלים – מוסתר כברירת מחדל -->
-<button id="peopleBtn" class="hidden">👥 בנק אנשים</button>
-<div id="peopleModal" class="modal" aria-hidden="true">
-  <div class="content" style="padding:14px">
-    <div class="row" style="justify-content:space-between">
-      <h3 style="margin:0">בנק אנשים (לוג מקומי)</h3>
-      <button id="peopleClose" class="btn-small">סגור</button>
-    </div>
-    <div id="peopleList" style="padding:8px 4px"></div>
-  </div>
-</div>
-
 <script>
 /* ===== STORAGE KEYS ===== */
-const K_USERS = 'icl_users_v1';          // [{user, pass, name, phone, role, area, station, email, createdAt}]
-const K_SESSION = 'icl_session_v1';      // {user}
-const K_PEOPLE = 'icl_people_v1';        // [{id/name/phone/...}]
-const K_LOG = 'icl_safety_entries_v6';   // [{ts,type,user}]
-const K_ONBOARD = 'icl_onboard_done_v1'; // (נשמר אוטומטית אחרי Registration)
+const K_USERS   = 'icl_users_v1';          // [{user, pass, name, phone, role, area, station, email, createdAt}]
+const K_SESSION = 'icl_session_v1';        // {user}
+const K_PEOPLE  = 'icl_people_v1';         // [{id/user/name/...}]  (לוג/בנק עובדים מקומי)
+const K_LOG     = 'icl_safety_entries_v6'; // [{ts,type,user,phone,gps}]
+/* ONLINE LOG endpoint (optional). אם נשאיר ריק — לא נשלח אונליין. */
+const ONLINE_LOG_URL = ""; // לדוגמה: "https://script.google.com/macros/s/XXXX/exec"
+
 /* ===== HELPERS ===== */
 const $ = (s,root)=> (root||document).querySelector(s);
 const el = (tag,attrs={}) => Object.assign(document.createElement(tag), attrs);
@@ -252,7 +231,7 @@ const write = (k,v)=>{ try { localStorage.setItem(k, JSON.stringify(v)); } catch
 const append = (k, obj)=>{ const arr=read(k,'[]'); arr.push(obj); write(k,arr); return arr; };
 const phoneIL = v => /^05\d-?\d{7}$/.test(String(v||'').trim());
 
-/* ===== AUTH / NAV ===== */
+/* ===== NAV ===== */
 function show(viewId){
   $('#authView').style.display = (viewId==='auth')?'block':'none';
   $('#regView').style.display  = (viewId==='reg') ?'block':'none';
@@ -260,9 +239,11 @@ function show(viewId){
 }
 function setTab(name){
   document.querySelectorAll('.tab').forEach(t=> t.classList.toggle('active', t.dataset.tab===name));
-  $('#tab_sos').style.display = (name==='sos')?'block':'none';
-  $('#tab_log').style.display = (name==='log')?'block':'none';
+  $('#tab_sos').style.display     = (name==='sos')?'block':'none';
+  $('#tab_log').style.display     = (name==='log')?'block':'none';
   $('#tab_profile').style.display = (name==='profile')?'block':'none';
+  $('#tab_people').style.display  = (name==='people')?'block':'none';
+  if (name==='people') renderPeopleList();
 }
 
 /* ===== USERS / PEOPLE ===== */
@@ -275,14 +256,16 @@ function upsertPerson(p){
   else list.push({...p, updatedAt: nowISO()});
   write(K_PEOPLE, list);
 }
-function renderPeopleModal(){
-  const box = $('#peopleList'); const arr = read(K_PEOPLE,'[]');
-  if (!arr.length) { box.innerHTML = '<div class="empty">אין נתונים.</div>'; return; }
-  box.innerHTML = arr.map(p => `
+function renderPeopleList(){
+  const box = $('#peopleList');
+  const arr = read(K_USERS,'[]');
+  if (!arr.length){ box.innerHTML = '<div class="empty">No people yet.</div>'; return; }
+  box.innerHTML = arr.slice().reverse().map(u => `
     <div class="log-row" style="grid-template-columns: 160px 1fr">
-      <div class="muted">${p.user||p.id||'-'}</div>
-      <div><b>${p.name||'-'}</b> · ${p.phone||''} · ${p.role||''} · ${p.area||''}${p.station?(' · '+p.station):''}</div>
-    </div>`).join('');
+      <div class="muted">${u.user}</div>
+      <div><b>${u.name||'-'}</b> · ${u.phone||''} · ${u.role||''} · ${u.area||''}${u.station?(' · '+u.station):''}</div>
+    </div>
+  `).join('');
 }
 
 /* ===== PROFILE BOX ===== */
@@ -301,23 +284,26 @@ function renderProfile(user){
 
 /* ===== LOG ===== */
 function renderLog(){
-  const list = read(K_LOG,'[]').slice().reverse(); // אחרונות ראשונות
+  const list = read(K_LOG,'[]').slice().reverse(); // הצגה מהאחרון לראשון
   const wrap = $('#logList');
-  if (!list.length){ wrap.innerHTML = '<div class="empty">אין קריאות ביומן.</div>'; return; }
+  if (!list.length){ wrap.innerHTML = '<div class="empty">No calls yet.</div>'; return; }
+
+  const label = {FIRE:'Fire', MED:'Medical', SEC:'Security', ENV:'Environment'};
   wrap.innerHTML = list.map(e=>{
-    const d = new Date(e.ts);
-    const time = d.toLocaleString('he-IL');
-    const tag = e.type==='FIRE'?'t-fire': e.type==='MED'?'t-med': e.type==='SEC'?'t-sec':'t-env';
-    const label = {FIRE:'אש', MED:'רפואה', SEC:'ביטחון', ENV:'סביבה'}[e.type]||e.type;
+    const time = new Date(e.ts).toLocaleString('he-IL');
+    const tag  = e.type==='FIRE'?'t-fire': e.type==='MED'?'t-med': e.type==='SEC'?'t-sec':'t-env';
+    const phone = e.phone ? ` · <a href="tel:${e.phone}">${e.phone}</a>` : '';
+    const gps = e.gps && e.gps.lat && e.gps.lng 
+      ? ` · <a target="_blank" rel="noopener" href="https://maps.google.com/?q=${e.gps.lat},${e.gps.lng}">GPS (${e.gps.lat}, ${e.gps.lng}${e.gps.acc? ' ±'+e.gps.acc+'m':''})</a>`
+      : '';
     return `<div class="log-row">
-      <div><span class="tag ${tag}">${label}</span></div>
-      <div>${time} — ע״י ${e.user || '-'}</div>
+      <div><span class="tag ${tag}">${label[e.type]||e.type}</span></div>
+      <div>${time} — by ${e.user || '-'}${phone}${gps}</div>
     </div>`;
   }).join('');
 }
 function hardResetLog(){
   if (!confirm('לאפס את היומן?')) return;
-  // מוחק כל מפתחות גרסאות ישנות + פרופילים
   ['icl_safety_entries_v1','icl_safety_entries_v2','icl_safety_entries_v3','icl_safety_entries_v4','icl_safety_entries_v5','icl_safety_entries_v6',
    'icl_safety_profile_v1','icl_safety_profile_v2','icl_safety_profile_v3','icl_safety_profile_v4','icl_safety_profile_v5',
    'icl_people_v1','icl_onboard_done_v1'].forEach(k=> localStorage.removeItem(k));
@@ -330,7 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Tabs
   document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => setTab(t.dataset.tab)));
 
-  // Auth routing
+  // Route by session
   const sess = read(K_SESSION, 'null');
   if (sess && sess.user){ show('app'); renderProfile(sess.user); renderLog(); }
   else show('auth');
@@ -341,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pass = $('#login_pass').value;
     const u = findUser(user);
     if (!u || u.pass !== pass){
-      $('#login_msg').textContent = 'משתמש/סיסמה לא נכונים. אפשר לבצע Registration.';
+      $('#login_msg').textContent = 'משתמש/סיסמה לא נכונים. ניתן לבצע Registration.';
       return;
     }
     write(K_SESSION, {user});
@@ -362,17 +348,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const station = $('#r_station').value.trim();
     const email = $('#r_email').value.trim();
 
-    if (!user || !pass || !name){ $('#reg_msg').textContent = 'שדות חובה חסרים (מספר אישי, סיסמה, שם מלא).'; return; }
+    if (!user || !pass || !name){ $('#reg_msg').textContent = 'שדות חובה חסרים (מס׳ אישי, סיסמה, שם מלא).'; return; }
     if (phone && !phoneIL(phone)){ $('#reg_msg').textContent = 'מספר נייד לא תקין (05X-XXXXXXX).'; return; }
 
     const users = read(K_USERS,'[]');
     if (users.find(u => String(u.user)===String(user))){
-      $('#reg_msg').textContent = 'משתמש קיים. נסה להתחבר או בחר מספר אישי אחר.';
-      return;
+      $('#reg_msg').textContent = 'משתמש קיים. נסה להתחבר או בחר מספר אישי אחר.'; return;
     }
     const rec = { user, pass, name, phone, role, area, station, email, createdAt: nowISO() };
     users.push(rec); write(K_USERS, users);
-    // מוסיפים גם לבנק אנשים
+    // מוסיפים גם לבנק אנשים המקומי
     upsertPerson({ id:user, user, name, phone, role, area, station, email });
     // כניסה אוטומטית
     write(K_SESSION, {user});
@@ -380,14 +365,42 @@ document.addEventListener('DOMContentLoaded', () => {
     show('app'); setTab('sos'); renderProfile(user); renderLog();
   });
 
-  // SOS buttons → add to log
+  // SOS buttons → capture phone + GPS and log (and optionally send ONLINE)
   document.querySelectorAll('.sos-btn').forEach(b => b.addEventListener('click', () => {
-    const sess = read(K_SESSION, 'null'); if (!sess || !sess.user){ show('auth'); return; }
-    const type = b.dataset.type;
-    append(K_LOG, { ts: nowISO(), type, user: sess.user });
-    renderLog();
-    // פידבק קצר
-    b.style.opacity = .8; setTimeout(()=> b.style.opacity=1, 120);
+    const sess = read(K_SESSION, 'null'); 
+    if (!sess || !sess.user){ show('auth'); return; }
+
+    const u = findUser(sess.user) || {};
+    const base = { ts: nowISO(), type: b.dataset.type, user: sess.user, phone: u.phone || null, gps: null };
+
+    const saveAndRender = (rec) => {
+      append(K_LOG, rec);
+      renderLog();
+      if (ONLINE_LOG_URL) { // שליחה אונליין אם הוגדר
+        try {
+          fetch(ONLINE_LOG_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(rec)
+          }).catch(()=>{});
+        } catch(e){}
+      }
+    };
+
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          base.gps = { lat: +pos.coords.latitude.toFixed(6), lng: +pos.coords.longitude.toFixed(6), acc: Math.round(pos.coords.accuracy) };
+          saveAndRender(base);
+        },
+        () => saveAndRender(base),
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 10000 }
+      );
+    } else {
+      saveAndRender(base);
+    }
+
+    b.style.opacity = .85; setTimeout(()=> b.style.opacity=1, 140);
   }));
 
   // Log actions
@@ -395,10 +408,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Logout
   $('#logoutBtn').addEventListener('click', ()=>{ localStorage.removeItem(K_SESSION); show('auth'); });
-
-  // People (optional)
-  $('#peopleBtn').addEventListener('click', ()=>{ $('#peopleModal').classList.add('show'); renderPeopleModal(); });
-  $('#peopleClose').addEventListener('click', ()=> $('#peopleModal').classList.remove('show'));
 });
 </script>
 
