@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>ICL SAFE • AI</title>
 
-  <!-- PWA hooks -->
+  <!-- PWA -->
   <link rel="manifest" href="manifest.webmanifest" />
   <meta name="theme-color" content="#0b1220" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
@@ -20,7 +20,7 @@
   <style>
     :root{
       --bg:#0b1220; --panel:#0f182b; --panel2:#111a2b; --muted:#a8b3c7; --text:#e6f2ff;
-      --primary:#32d5f2; --primary-2:#11b3d9; --ok:#10b981; --warn:#f59e0b; --danger:#ef4444; --border:rgba(255,255,255,.08);
+      --primary:#32d5f2; --primary-2:#11b3d9; --ok:#10b981; --danger:#ef4444; --border:rgba(255,255,255,.08);
       --ring:#0ce6ff;
     }
     *{box-sizing:border-box}
@@ -68,7 +68,7 @@
 
     /* Login/Registration */
     #authView .box{max-width:420px; margin:8vh auto; padding:18px}
-    #regView .box{max-width:820px; margin:18px auto; padding:18px}
+    #regView .box{max-width:920px; margin:18px auto; padding:18px}
 
     /* SOS round buttons */
     .sos-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; padding:14px}
@@ -81,37 +81,20 @@
     }
     .sos-btn:active{transform:scale(.98)}
     .sos-label{position:absolute; bottom:10px; left:0; right:0; text-align:center; font-size:12px; font-weight:800; letter-spacing:.3px}
-
-    /* Per-type colors (as agreed) */
-    .sos-btn[data-type="FIRE"]{
-      background: radial-gradient(60% 60% at 50% 35%, rgba(255,255,255,.18), rgba(255,255,255,.02)),
-                  conic-gradient(from 220deg, #ff784e, #ef4444);
-      color:#200;
-    }
-    .sos-btn[data-type="MED"]{
-      background: radial-gradient(60% 60% at 50% 35%, rgba(255,255,255,.18), rgba(255,255,255,.02)),
-                  conic-gradient(from 220deg, #67e8f9, #11b3d9);
-      color:#03171d;
-    }
-    .sos-btn[data-type="SEC"]{
-      background: radial-gradient(60% 60% at 50% 35%, rgba(255,255,255,.18), rgba(255,255,255,.02)),
-                  conic-gradient(from 220deg, #c4b5fd, #7c3aed);
-      color:#130b2b;
-    }
-    .sos-btn[data-type="ENV"]{
-      background: radial-gradient(60% 60% at 50% 35%, rgba(255,255,255,.18), rgba(255,255,255,.02)),
-                  conic-gradient(from 220deg, #6ee7b7, #10b981);
-      color:#062019;
-    }
+    .sos-btn[data-type="FIRE"]{ background: radial-gradient(60% 60% at 50% 35%, rgba(255,255,255,.18), rgba(255,255,255,.02)), conic-gradient(from 220deg, #ff784e, #ef4444); color:#200;}
+    .sos-btn[data-type="MED"] { background: radial-gradient(60% 60% at 50% 35%, rgba(255,255,255,.18), rgba(255,255,255,.02)), conic-gradient(from 220deg, #67e8f9, #11b3d9); color:#03171d;}
+    .sos-btn[data-type="SEC"] { background: radial-gradient(60% 60% at 50% 35%, rgba(255,255,255,.18), rgba(255,255,255,.02)), conic-gradient(from 220deg, #c4b5fd, #7c3aed); color:#130b2b;}
+    .sos-btn[data-type="ENV"] { background: radial-gradient(60% 60% at 50% 35%, rgba(255,255,255,.18), rgba(255,255,255,.02)), conic-gradient(from 220deg, #6ee7b7, #10b981); color:#062019;}
 
     /* Log list */
     #logList{padding:8px 14px}
-    .log-row{display:grid; grid-template-columns: 110px 1fr; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border)}
+    .log-row{display:grid; grid-template-columns: 110px 1fr; gap:10px; padding:12px; border-bottom:1px solid var(--border)}
     .tag{font-size:12px; padding:2px 7px; border-radius:999px; display:inline-block}
     .t-fire{background:#2b0d0d; color:#ffb3b3}
     .t-med{background:#0d1f2b; color:#b3e5ff}
     .t-sec{background:#14112b; color:#c7b3ff}
     .t-env{background:#0c2318; color:#b3ffdb}
+    .thumb{width:88px; height:88px; object-fit:cover; border-radius:12px; border:1px solid var(--border)}
     .empty{color:#93a3bd; padding:10px}
   </style>
 </head>
@@ -151,11 +134,12 @@
         <div class="col"><label>מספר אישי (UserName) *</label><input id="r_user" class="input" inputmode="numeric" placeholder="מספר אישי"/></div>
         <div class="col"><label>סיסמה *</label><input id="r_pass" class="input" type="password" placeholder="בחר סיסמה"/></div>
         <div class="col"><label>שם מלא *</label><input id="r_name" class="input" placeholder="שם מלא"/></div>
-        <div class="col"><label>נייד</label><input id="r_phone" class="input" inputmode="tel" placeholder="05X-XXXXXXX"/></div>
-        <div class="col"><label>תפקיד</label><input id="r_role" class="input" placeholder="תפקיד"/></div>
-        <div class="col"><label>אזור / מפעל</label><input id="r_area" class="input" placeholder="אזור"/></div>
-        <div class="col"><label>תחנה / עמדת עבודה</label><input id="r_station" class="input" placeholder="תחנה"/></div>
-        <div class="col"><label>אימייל</label><input id="r_email" class="input" inputmode="email" placeholder="name@example.com"/></div>
+        <div class="col"><label>נייד *</label><input id="r_phone" class="input" inputmode="tel" placeholder="05X-XXXXXXX"/></div>
+        <div class="col"><label>טלפון חירום (מנהל) *</label><input id="r_mgr" class="input" inputmode="tel" placeholder="05X-XXXXXXX"/></div>
+        <div class="col"><label>תפקיד *</label><input id="r_role" class="input" placeholder="תפקיד"/></div>
+        <div class="col"><label>מפעל *</label><input id="r_factory" class="input" placeholder="שם המפעל"/></div>
+        <div class="col"><label>מחלקה *</label><input id="r_dept" class="input" placeholder="שם המחלקה"/></div>
+        <div class="col"><label>אימייל *</label><input id="r_email" class="input" inputmode="email" placeholder="name@example.com"/></div>
       </div>
       <div class="row" style="justify-content:flex-start; margin-top:8px; gap:10px">
         <button id="reg_save" class="btn btn-ok">שמירה וכניסה</button>
@@ -163,7 +147,7 @@
         <div id="reg_msg" class="muted"></div>
       </div>
       <div class="muted" style="margin-top:8px; font-size:12px">
-        נתונים נשמרים מקומית בדפדפן (דמו). לפרודקשן נוסיף שרת/SSO.
+        כל הנתונים נשמרים מקומית בדפדפן (דמו פרטי/ארגוני ללא שרת).
       </div>
     </div>
   </section>
@@ -188,7 +172,22 @@
         <button class="sos-btn" data-type="SEC" aria-label="Security">🛡️<div class="sos-label">Security</div></button>
         <button class="sos-btn" data-type="ENV" aria-label="Environment">🌿<div class="sos-label">Environment</div></button>
       </div>
-      <div class="muted" style="padding:0 14px 10px; font-size:12px">לחיצה תוסיף רשומה ליומן עם תאריך/שעה, משתמש מחובר, טלפון ו-GPS (אם מאושר).</div>
+
+      <!-- Add Photo (saved into log) -->
+      <div class="card" style="margin:8px 14px; padding:12px">
+        <div class="row" style="justify-content:space-between; gap:10px; flex-wrap:wrap">
+          <div class="col" style="flex:1 1 280px">
+            <label class="muted">צרף תמונה לקריאה (אופציונלי)</label>
+            <input id="attachPhoto" class="input" type="file" accept="image/*" />
+            <small class="muted">התמונה תישמר מקומית ביומן הקריאות.</small>
+          </div>
+          <img id="attachPreview" class="thumb" alt="" style="display:none">
+        </div>
+      </div>
+
+      <div class="muted" style="padding:0 14px 10px; font-size:12px">
+        לחיצה על SOS תוסיף רשומה ליומן עם תאריך/שעה, פרטי המשתמש המלאים, GPS (אם מאושר), ותמונה אם צורפה.
+      </div>
     </div>
 
     <!-- LOG -->
@@ -199,10 +198,15 @@
       <div id="logList"></div>
     </div>
 
-    <!-- PROFILE (read-only) -->
+    <!-- PROFILE (editable) -->
     <div id="tab_profile" class="panel" style="padding:14px; display:none">
       <h3 style="margin:4px 0 10px">פרטי משתמש</h3>
-      <div id="profileBox" class="grid grid-3"></div>
+      <div id="profileForm" class="grid grid-2"></div>
+      <div class="row" style="gap:10px; margin-top:8px">
+        <button id="profileSave" class="btn btn-ok">שמירת עדכון</button>
+        <button id="profileDelete" class="btn btn-danger">מחיקת משתמש</button>
+        <div id="profileMsg" class="muted"></div>
+      </div>
     </div>
 
     <!-- PEOPLE (registered users) -->
@@ -215,12 +219,9 @@
 
 <script>
 /* ===== STORAGE KEYS ===== */
-const K_USERS   = 'icl_users_v1';          // [{user, pass, name, phone, role, area, station, email, createdAt}]
+const K_USERS   = 'icl_users_v2';          // [{user, pass, name, phone, mgr, role, factory, dept, email, createdAt}]
 const K_SESSION = 'icl_session_v1';        // {user}
-const K_PEOPLE  = 'icl_people_v1';         // [{id/user/name/...}]  (לוג/בנק עובדים מקומי)
-const K_LOG     = 'icl_safety_entries_v6'; // [{ts,type,user,phone,gps}]
-/* ONLINE LOG endpoint (optional). אם נשאיר ריק — לא נשלח אונליין. */
-const ONLINE_LOG_URL = ""; // לדוגמה: "https://script.google.com/macros/s/XXXX/exec"
+const K_LOG     = 'icl_safety_entries_v7'; // [{ts,type,user,phone,mgr,role,factory,dept,email,gps?,img?}]
 
 /* ===== HELPERS ===== */
 const $ = (s,root)=> (root||document).querySelector(s);
@@ -230,6 +231,7 @@ const read = (k, fb) => { try { return JSON.parse(localStorage.getItem(k) ?? fb)
 const write = (k,v)=>{ try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
 const append = (k, obj)=>{ const arr=read(k,'[]'); arr.push(obj); write(k,arr); return arr; };
 const phoneIL = v => /^05\d-?\d{7}$/.test(String(v||'').trim());
+const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /* ===== NAV ===== */
 function show(viewId){
@@ -246,65 +248,97 @@ function setTab(name){
   if (name==='people') renderPeopleList();
 }
 
-/* ===== USERS / PEOPLE ===== */
-function findUser(user){ return read(K_USERS,'[]').find(u => String(u.user)===String(user)); }
-function upsertPerson(p){
-  const list = read(K_PEOPLE, '[]');
-  const key = p.id || p.user || p.name;
-  const i = list.findIndex(x => (x.id||x.user||x.name)===key);
-  if (i>-1) list[i] = {...list[i], ...p, updatedAt: nowISO()};
-  else list.push({...p, updatedAt: nowISO()});
-  write(K_PEOPLE, list);
+/* ===== USERS ===== */
+function allUsers(){ return read(K_USERS,'[]'); }
+function findUser(user){ return allUsers().find(u => String(u.user)===String(user)); }
+function saveUser(u){
+  const arr = allUsers();
+  const i = arr.findIndex(x => String(x.user)===String(u.user));
+  if (i>-1) arr[i] = u; else arr.push(u);
+  write(K_USERS, arr);
 }
+function deleteUser(user){
+  const arr = allUsers().filter(u => String(u.user)!==String(user));
+  write(K_USERS, arr);
+}
+
+/* ===== PROFILE (editable form) ===== */
+function renderProfileForm(user){
+  const u = findUser(user); if (!u) return;
+  const F = (id,label,val,type='text',ph='') => `
+    <div class="col"><label>${label}</label><input id="${id}" class="input" ${type==='password'?'type="password"':''} value="${val?String(val).replace(/"/g,'&quot;'):''}" placeholder="${ph}"/></div>`;
+  $('#profileForm').innerHTML = `
+    ${F('p_user', 'מספר אישי', u.user, 'text')}
+    ${F('p_pass', 'סיסמה', u.pass, 'password')}
+    ${F('p_name', 'שם מלא', u.name)}
+    ${F('p_phone', 'נייד', u.phone, 'text','05X-XXXXXXX')}
+    ${F('p_mgr', 'טלפון חירום (מנהל)', u.mgr, 'text','05X-XXXXXXX')}
+    ${F('p_role', 'תפקיד', u.role)}
+    ${F('p_factory', 'מפעל', u.factory)}
+    ${F('p_dept', 'מחלקה', u.dept)}
+    ${F('p_email', 'אימייל', u.email)}
+  `;
+}
+function collectProfile(){
+  return {
+    user: $('#p_user').value.trim(),
+    pass: $('#p_pass').value,
+    name: $('#p_name').value.trim(),
+    phone: $('#p_phone').value.trim(),
+    mgr: $('#p_mgr').value.trim(),
+    role: $('#p_role').value.trim(),
+    factory: $('#p_factory').value.trim(),
+    dept: $('#p_dept').value.trim(),
+    email: $('#p_email').value.trim(),
+    createdAt: findUser($('#p_user').value.trim())?.createdAt || nowISO()
+  };
+}
+function validateUser(u){
+  if (!u.user || !u.pass || !u.name || !u.phone || !u.mgr || !u.role || !u.factory || !u.dept || !u.email) return 'כל השדות חובה';
+  if (!phoneIL(u.phone)) return 'נייד לא תקין (05X-XXXXXXX)';
+  if (!phoneIL(u.mgr)) return 'טלפון חירום (מנהל) לא תקין (05X-XXXXXXX)';
+  if (!emailRx.test(u.email)) return 'אימייל לא תקין';
+  return '';
+}
+
+/* ===== PEOPLE (read-only list of registered users) ===== */
 function renderPeopleList(){
   const box = $('#peopleList');
-  const arr = read(K_USERS,'[]');
+  const arr = allUsers();
   if (!arr.length){ box.innerHTML = '<div class="empty">No people yet.</div>'; return; }
   box.innerHTML = arr.slice().reverse().map(u => `
     <div class="log-row" style="grid-template-columns: 160px 1fr">
       <div class="muted">${u.user}</div>
-      <div><b>${u.name||'-'}</b> · ${u.phone||''} · ${u.role||''} · ${u.area||''}${u.station?(' · '+u.station):''}</div>
+      <div><b>${u.name||'-'}</b> · ${u.phone||''} · ${u.role||''} · ${u.factory||''}${u.dept?(' · '+u.dept):''}</div>
     </div>
-  `).join('');
-}
-
-/* ===== PROFILE BOX ===== */
-function renderProfile(user){
-  const u = findUser(user); if (!u) return;
-  const fields = [
-    ['מספר אישי', u.user], ['שם מלא', u.name], ['נייד', u.phone||'-'],
-    ['תפקיד', u.role||'-'], ['אזור', u.area||'-'], ['תחנה', u.station||'-'],
-    ['אימייל', u.email||'-'], ['נוצר', new Date(u.createdAt).toLocaleString('he-IL')]
-  ];
-  const box = $('#profileBox');
-  box.innerHTML = fields.map(([k,v]) => `
-    <div class="card" style="padding:12px"><div class="muted" style="font-size:12px">${k}</div><div>${v||'-'}</div></div>
   `).join('');
 }
 
 /* ===== LOG ===== */
 function renderLog(){
-  const list = read(K_LOG,'[]').slice().reverse(); // הצגה מהאחרון לראשון
+  const list = read(K_LOG,'[]').slice().reverse();
   const wrap = $('#logList');
   if (!list.length){ wrap.innerHTML = '<div class="empty">No calls yet.</div>'; return; }
-
   const label = {FIRE:'Fire', MED:'Medical', SEC:'Security', ENV:'Environment'};
   wrap.innerHTML = list.map(e=>{
     const time = new Date(e.ts).toLocaleString('he-IL');
     const tag  = e.type==='FIRE'?'t-fire': e.type==='MED'?'t-med': e.type==='SEC'?'t-sec':'t-env';
     const phone = e.phone ? ` · <a href="tel:${e.phone}">${e.phone}</a>` : '';
+    const mgr   = e.mgr   ? ` · mgr: <a href="tel:${e.mgr}">${e.mgr}</a>` : '';
+    const meta  = ` · ${e.role||''} · ${e.factory||''}${e.dept?(' / '+e.dept):''}${e.email?(' · '+e.email):''}`;
     const gps = e.gps && e.gps.lat && e.gps.lng 
       ? ` · <a target="_blank" rel="noopener" href="https://maps.google.com/?q=${e.gps.lat},${e.gps.lng}">GPS (${e.gps.lat}, ${e.gps.lng}${e.gps.acc? ' ±'+e.gps.acc+'m':''})</a>`
       : '';
-    return `<div class="log-row">
+    const img = e.img ? `<div><img class="thumb" src="${e.img}" alt="photo"/></div>` : '';
+    return `<div class="log-row" style="grid-template-columns:110px 1fr">
       <div><span class="tag ${tag}">${label[e.type]||e.type}</span></div>
-      <div>${time} — by ${e.user || '-'}${phone}${gps}</div>
+      <div>${time} — by ${e.user || '-'}${phone}${mgr}${meta}${gps}${img}</div>
     </div>`;
   }).join('');
 }
 function hardResetLog(){
   if (!confirm('לאפס את היומן?')) return;
-  ['icl_safety_entries_v1','icl_safety_entries_v2','icl_safety_entries_v3','icl_safety_entries_v4','icl_safety_entries_v5','icl_safety_entries_v6',
+  ['icl_safety_entries_v1','icl_safety_entries_v2','icl_safety_entries_v3','icl_safety_entries_v4','icl_safety_entries_v5','icl_safety_entries_v6','icl_safety_entries_v7',
    'icl_safety_profile_v1','icl_safety_profile_v2','icl_safety_profile_v3','icl_safety_profile_v4','icl_safety_profile_v5',
    'icl_people_v1','icl_onboard_done_v1'].forEach(k=> localStorage.removeItem(k));
   try{ sessionStorage.clear(); }catch{}
@@ -312,13 +346,14 @@ function hardResetLog(){
 }
 
 /* ===== APP INIT ===== */
+let pendingImageData = null;
 document.addEventListener('DOMContentLoaded', () => {
   // Tabs
   document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => setTab(t.dataset.tab)));
 
   // Route by session
   const sess = read(K_SESSION, 'null');
-  if (sess && sess.user){ show('app'); renderProfile(sess.user); renderLog(); }
+  if (sess && sess.user){ show('app'); setTab('sos'); renderProfileForm(sess.user); renderLog(); }
   else show('auth');
 
   // Login
@@ -332,59 +367,87 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     write(K_SESSION, {user});
     $('#login_msg').textContent = '';
-    show('app'); setTab('sos'); renderProfile(user); renderLog();
+    show('app'); setTab('sos'); renderProfileForm(user); renderLog();
   });
   $('#linkReg').addEventListener('click', (e)=>{ e.preventDefault(); show('reg'); });
 
-  // Registration
+  // Registration (ALL FIELDS REQUIRED)
   $('#reg_cancel').addEventListener('click', ()=> show('auth'));
   $('#reg_save').addEventListener('click', () => {
-    const user = $('#r_user').value.trim();
-    const pass = $('#r_pass').value;
-    const name = $('#r_name').value.trim();
-    const phone = $('#r_phone').value.trim();
-    const role = $('#r_role').value.trim();
-    const area = $('#r_area').value.trim();
-    const station = $('#r_station').value.trim();
-    const email = $('#r_email').value.trim();
-
-    if (!user || !pass || !name){ $('#reg_msg').textContent = 'שדות חובה חסרים (מס׳ אישי, סיסמה, שם מלא).'; return; }
-    if (phone && !phoneIL(phone)){ $('#reg_msg').textContent = 'מספר נייד לא תקין (05X-XXXXXXX).'; return; }
-
-    const users = read(K_USERS,'[]');
-    if (users.find(u => String(u.user)===String(user))){
+    const rec = {
+      user:    $('#r_user').value.trim(),
+      pass:    $('#r_pass').value,
+      name:    $('#r_name').value.trim(),
+      phone:   $('#r_phone').value.trim(),
+      mgr:     $('#r_mgr').value.trim(),
+      role:    $('#r_role').value.trim(),
+      factory: $('#r_factory').value.trim(),
+      dept:    $('#r_dept').value.trim(),
+      email:   $('#r_email').value.trim(),
+      createdAt: nowISO()
+    };
+    const err = validateUser(rec);
+    if (err){ $('#reg_msg').textContent = err; return; }
+    const users = allUsers();
+    if (users.find(u => String(u.user)===String(rec.user))){
       $('#reg_msg').textContent = 'משתמש קיים. נסה להתחבר או בחר מספר אישי אחר.'; return;
     }
-    const rec = { user, pass, name, phone, role, area, station, email, createdAt: nowISO() };
-    users.push(rec); write(K_USERS, users);
-    // מוסיפים גם לבנק אנשים המקומי
-    upsertPerson({ id:user, user, name, phone, role, area, station, email });
-    // כניסה אוטומטית
-    write(K_SESSION, {user});
+    saveUser(rec);
+    write(K_SESSION, {user:rec.user});
     $('#reg_msg').textContent = '';
-    show('app'); setTab('sos'); renderProfile(user); renderLog();
+    show('app'); setTab('sos'); renderProfileForm(rec.user); renderLog();
   });
 
-  // SOS buttons → capture phone + GPS and log (and optionally send ONLINE)
+  // Profile Save/Update
+  $('#profileSave').addEventListener('click', ()=>{
+    const u = collectProfile();
+    const err = validateUser(u);
+    if (err){ $('#profileMsg').textContent = err; return; }
+    // אם שינו את המספר האישי, נוודא שאין התנגשות
+    const existsOther = allUsers().some(x => x.user===u.user && x.createdAt!==findUser(u.user)?.createdAt);
+    if (existsOther){ $('#profileMsg').textContent = 'מספר אישי בשימוש.'; return; }
+    saveUser(u);
+    $('#profileMsg').textContent = 'נשמר ✔';
+    // רענון תצוגות
+    renderPeopleList(); renderLog();
+  });
+
+  // Delete user
+  $('#profileDelete').addEventListener('click', ()=>{
+    const sess = read(K_SESSION,'null'); if (!sess || !sess.user) return;
+    if (!confirm('למחוק את המשתמש הנוכחי?')) return;
+    deleteUser(sess.user);
+    localStorage.removeItem(K_SESSION);
+    show('auth');
+  });
+
+  // Attach photo preview + store for next SOS press
+  $('#attachPhoto').addEventListener('change', (ev)=>{
+    const f = ev.target.files && ev.target.files[0];
+    if (!f) { pendingImageData=null; $('#attachPreview').style.display='none'; return; }
+    const reader = new FileReader();
+    reader.onload = ()=>{ pendingImageData = reader.result; $('#attachPreview').src = pendingImageData; $('#attachPreview').style.display='block'; };
+    reader.readAsDataURL(f);
+  });
+
+  // SOS buttons → capture full user, GPS, optional image
   document.querySelectorAll('.sos-btn').forEach(b => b.addEventListener('click', () => {
     const sess = read(K_SESSION, 'null'); 
     if (!sess || !sess.user){ show('auth'); return; }
 
     const u = findUser(sess.user) || {};
-    const base = { ts: nowISO(), type: b.dataset.type, user: sess.user, phone: u.phone || null, gps: null };
+    const base = {
+      ts: nowISO(), type: b.dataset.type, user: sess.user,
+      phone: u.phone || null, mgr: u.mgr || null, role: u.role || null,
+      factory: u.factory || null, dept: u.dept || null, email: u.email || null,
+      gps: null, img: pendingImageData || null
+    };
 
     const saveAndRender = (rec) => {
       append(K_LOG, rec);
       renderLog();
-      if (ONLINE_LOG_URL) { // שליחה אונליין אם הוגדר
-        try {
-          fetch(ONLINE_LOG_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(rec)
-          }).catch(()=>{});
-        } catch(e){}
-      }
+      // נקה את התמונה לאחר שימוש
+      pendingImageData = null; $('#attachPhoto').value=''; $('#attachPreview').style.display='none';
     };
 
     if ("geolocation" in navigator) {
@@ -408,6 +471,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Logout
   $('#logoutBtn').addEventListener('click', ()=>{ localStorage.removeItem(K_SESSION); show('auth'); });
+
+  // If session exists, render profile form
+  if (sess && sess.user) renderProfileForm(sess.user);
 });
 </script>
 
